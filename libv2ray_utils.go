@@ -28,7 +28,13 @@ func (x *CoreController) QueryAllOutboundTrafficStats() string {
 
 	var b strings.Builder
 
-	x.statsManager.VisitCounters(func(name string, counter corestats.Counter) bool {
+	vm, ok := x.statsManager.(interface {
+		VisitCounters(func(string, corestats.Counter) bool)
+	})
+	if !ok {
+		return ""
+	}
+	vm.VisitCounters(func(name string, counter corestats.Counter) bool {
 		parts := strings.Split(name, ">>>")
 		if len(parts) != 4 || parts[0] != "outbound" || parts[2] != "traffic" {
 			return true

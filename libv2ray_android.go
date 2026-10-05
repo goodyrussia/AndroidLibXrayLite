@@ -1,14 +1,14 @@
 package libv2ray
 
-import (
-	"fmt"
-
-	corenet "github.com/xtls/xray-core/common/net"
-)
-
 // ProcessFinder is an interface for Android process finding functionality.
 // Apps using AndroidLibXrayLite should implement FindProcessByConnection()
 // and pass the implementation to RegisterProcessFinder() before starting the core.
+//
+// NOTE: this build pins Xray-core v1.260123.0-patch.1 (permissive TLS line:
+// allowInsecure + plain VLESS/Trojan supported). That core predates
+// common/net.RegisterAndroidProcessFinder (26.9.x+), so the finder cannot be
+// forwarded to the core. The API is kept for app compatibility; per-app
+// (UID-based) routing attribution is a no-op with this core build.
 type ProcessFinder interface {
 	// FindProcessByConnection finds the UID of the process that owns the given connection.
 	//
@@ -25,29 +25,7 @@ type ProcessFinder interface {
 // enabling per-app routing based on UID. Must be called before starting the
 // core for process-based routing rules to work.
 // Pass nil to unregister a previously registered finder.
+//
+// No-op on this core build (see ProcessFinder note above).
 func (x *CoreController) RegisterProcessFinder(finder ProcessFinder) {
-	if finder == nil {
-		corenet.RegisterAndroidProcessFinder(nil)
-		return
-	}
-
-	corenet.RegisterAndroidProcessFinder(func(network, srcIP string, srcPort uint16, destIP string, destPort uint16) (uid int, name string, path string, err error) {
-		// getConnectionOwnerUid only works for established connections,
-		// so if dest is missing, it likely means the connection is not fully established yet.
-		// In that case, we can return an error to indicate that the process cannot be determined at this time.
-		if destPort == 0 || destIP == "" {
-			return 0, "", "", fmt.Errorf("processFinder, no dest for %s %s:%d", network, srcIP, srcPort)
-		}
-
-		defer func() {
-			if r := recover(); r != nil {
-				uid, name, path, err = 0, "", "", fmt.Errorf("processFinder panic: %v", r)
-			}
-		}()
-		uid = finder.FindProcessByConnection(network, srcIP, int(srcPort), destIP, int(destPort))
-		// if uid < 0 {
-		// 	return 0, "", "", fmt.Errorf("processFinder, not found for %s %s:%d -> %s:%d", network, srcIP, srcPort, destIP, destPort)
-		// }
-		return uid, fmt.Sprintf("%d", uid), "", nil
-	})
 }

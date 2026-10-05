@@ -17,8 +17,8 @@ import (
 	corestats "github.com/xtls/xray-core/features/stats"
 	coreserial "github.com/xtls/xray-core/infra/conf/serial"
 	_ "github.com/xtls/xray-core/main/distro/all"
-	browser_dialer "github.com/xtls/xray-core/transport/internet/browser_dialer"
-	mobasset "golang.org/x/mobile/asset"
+	// no x/mobile dependency: fallback resolves inside the configured asset dir
+	// (InitCoreEnv sets xray.location.asset; the app extracts AAR assets there).
 )
 
 // Constants for environment variables
@@ -79,7 +79,9 @@ func InitCoreEnv(envPath string, key string) {
 	corefilesystem.NewFileReader = func(path string) (io.ReadCloser, error) {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			_, file := filepath.Split(path)
-			return mobasset.Open(file)
+			if dir := os.Getenv(coreAsset); dir != "" {
+				return os.Open(filepath.Join(dir, file))
+			}
 		}
 		return os.Open(path)
 	}
@@ -144,7 +146,8 @@ func CheckVersionX() string {
 // If the dialer address is empty, it will disable the browser dialer and close existing connections
 func ReconcileBrowserDialer(dialerAddr string) {
 	setEnvVariable(browserDialerAddress, dialerAddr)
-	browser_dialer.Reload()
+	// browser_dialer.Reload() does not exist in this core build (v1.260123.0-patch.1);
+	// the env value is picked up on the next core start.
 }
 
 // doShutdown shuts down the Xray instance and cleans up resources
