@@ -29,15 +29,20 @@ Everything else (`InitCoreEnv`, `NewCoreController`, `CheckVersionX`,
 
 ## Build
 
+**CRITICAL — use the upstream `build_shared.py` pipeline, not a plain `gomobile bind`.**
+Root-mode clients (AsteriskNG `asteriskd`) exec `nativeLibraryDir/libxray.so` as the
+core process. That launcher is only produced by `scripts/build_shared.py`, which also
+builds `libgojni.so` with the `AndroidXrayCLI_v1` export. A gomobile-bind-only AAR
+looks fine but breaks every ROOT mode with `setupErrno=2` (ENOENT).
+
 `scripts/build_aar.sh` (needs Go + Android NDK/SDK):
 
 - clones `github.com/eichgee/Xray-core` at `v1.260123.0-patch.1`
 - injects `libv2ray_*.go` (this repo) as `libv2ray/` package inside the core module
   (builds against the core's own dep set — zero version drift)
-- `gomobile bind -target=android/arm64 -androidapi 24`
-- bundles `assets/geoip.dat` + `assets/geosite.dat` (AAR assets, merged into APK)
+- runs `build_shared.py --arch arm64` → `libgojni.so` (JNI+CLI) + `libxray.so` launcher
+- bundles `assets/geoip.dat` + `geoip.dat`/`geosite.dat` + `geoip-only-cn-private.dat`
 
-Provenance of `v26.1.23-p1`: built 2026-10-05 from this recipe; verified with a
-13/13 live+config smoke suite (plain Trojan connect, allowInsecure self-signed
-connect + strict-mode negative, PCS pin, plain protocols to public addrs, full
-app-shaped golden config through `xray run -test`).
+Provenance of `v26.1.23-p2`: built 2026-10-05 with the pipeline above (verified:
+launcher = aarch64 PIE exec, `AndroidXrayCLI_v1` exported). `p1` was a gomobile-bind-only
+build that MISSED the launcher — do not use it for ROOT modes.
