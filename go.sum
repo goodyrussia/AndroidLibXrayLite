@@ -10,6 +10,8 @@ github.com/golang/mock v1.7.0-rc.1 h1:YojYx61/OLFsiv6Rw1Z96LpldJIy31o+UHmwAUMJ6/
 github.com/golang/mock v1.7.0-rc.1/go.mod h1:s42URUywIqd+OcERslBJvOjepvNymP31m3q8d/GkuRs=
 github.com/golang/protobuf v1.5.4 h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
 github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6rSs7xps=
+github.com/goodyrussia/Xray-core v1.260327.1-goody1 h1:0NE4LefjOhnziEeCFzgynSbVVVkFkJiEYk8kGYHnaHM=
+github.com/goodyrussia/Xray-core v1.260327.1-goody1/go.mod h1:qOpfp0I7DlfhmEHyiv0OV+6jbalzb41EFGegv0UfzBE=
 github.com/google/btree v1.1.3 h1:CVpQJjYgC4VbzxeGVHfvZrv1ctoYCAI8vbl07Fcxlyg=
 github.com/google/btree v1.1.3/go.mod h1:qOPhT0dTNdNzV6Z/lhRX0YXUafgPLFUh+gZMl761Gm4=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
@@ -76,8 +78,6 @@ github.com/wlynxg/anet v0.0.5 h1:J3VJGi1gvo0JwZ/P1/Yc/8p63SoW98B5dHkYDmpgvvU=
 github.com/wlynxg/anet v0.0.5/go.mod h1:eay5PRQr7fIVAMbTbchTnO9gG65Hg/uYGdc7mguHxoA=
 github.com/xtls/reality v0.0.0-20261108101329-4bb46b2afd8b h1:fAn11r21QiUY2oAGwENWb5ummjhWwMcs2WzkbjDMh+k=
 github.com/xtls/reality v0.0.0-20261108101329-4bb46b2afd8b/go.mod h1:ptlSkJ8k/7IDauNH0SA96JPOo+nYGLTv2Y3UMpwvAsY=
-github.com/xtls/xray-core v1.260327.1-0.20261109052709-676eaf66f8f0 h1:p2uoadP+ulClbJ9dn+QioF2SfBqRly6VoKJosHqwcRo=
-github.com/xtls/xray-core v1.260327.1-0.20261109052709-676eaf66f8f0/go.mod h1:qOpfp0I7DlfhmEHyiv0OV+6jbalzb41EFGegv0UfzBE=
 github.com/yuin/gopher-lua v0.0.0-20190206043414-8bfc7677f583/go.mod h1:gqRgreBUhTSL0GeU64rtZ3Uq3wtjOa/TB2YfrtkCbVQ=
 github.com/yuin/gopher-lua v1.1.2 h1:yF/FjE3hD65tBbt0VXLE13HWS9h34fdzJmrWRXwobGA=
 github.com/yuin/gopher-lua v1.1.2/go.mod h1:7aRmXIWl37SqRf0koeyylBEzJ+aPt8A+mmkQ4f1ntR8=

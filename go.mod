@@ -5,8 +5,14 @@ go 1.27
 require (
 	github.com/apernet/quic-go v0.61.1-0.20260806010916-184d081eef3e
 	github.com/xtls/xray-core v1.260327.1-0.20261109052709-676eaf66f8f0
+	golang.org/x/crypto v0.58.0
 	golang.org/x/mobile v0.0.0-20261011034528-197770444867
 )
+
+// goodyrussia: use the patched core (restrictions removed) instead of upstream.
+// The tag is v1.260327.1-goody1 (Go modules need a v0/v1 version; the
+// human-readable tag v26.11.9-goody1 points at the same commit).
+replace github.com/xtls/xray-core => github.com/goodyrussia/Xray-core v1.260327.1-goody1
 
 require (
 	github.com/ghodss/yaml v1.0.1-0.20220118164431-d8423dcdf344 // indirect
@@ -42,7 +48,6 @@ require (
 	github.com/yuin/gopher-lua v1.1.2 // indirect
 	go.uber.org/mock v0.6.0 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
-	golang.org/x/crypto v0.58.0 // indirect
 	golang.org/x/crypto/x509roots/fallback v0.0.0-20261020153306-9f2b28d4331a // indirect
 	golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842 // indirect
 	golang.org/x/net v0.62.0 // indirect
